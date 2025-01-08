@@ -13,6 +13,7 @@ from spacy.lang.en import English
 from spacy.lang.es import Spanish
 from spacy.lang.ja import Japanese
 from spacy.lang.zh import Chinese
+from spacy.lang.vi import Vietnamese
 from tokenizers import Tokenizer
 
 from TTS.tts.layers.xtts.zh_num2words import TextNorm as zh_num2words
@@ -27,6 +28,8 @@ def get_spacy_lang(lang):
         return Arabic()
     elif lang == "es":
         return Spanish()
+    elif lang == "vi":
+        return Vietnamese()
     else:
         # For most languages, Enlish does the job
         return English()
@@ -229,6 +232,12 @@ _abbreviations = {
             # Korean doesn't typically use abbreviations in the same way as Latin-based scripts.
         ]
     ],
+    "vi": [
+        (re.compile("\\b%s\\." % x[0], re.IGNORECASE), x[1])
+        for x in [
+            # Vietnamese doesn't typically use abbreviations in the same way as Latin-based scripts.
+        ]
+    ],
 }
 
 
@@ -425,6 +434,18 @@ _symbols_multilingual = {
             ("°", " 도 "),
         ]
     ],
+     "vi": [
+        (re.compile(r"%s" % re.escape(x[0]), re.IGNORECASE), x[1])
+        for x in [
+            ("&", " và "),
+            ("@", " tại "),
+            ("%", " phần trăm "),
+            ("#", " thăng "),
+            ("$", " đô la "),
+            ("£", " bảng "),
+            ("°", " độ "),
+        ]
+    ],
 }
 
 
@@ -450,6 +471,7 @@ _ordinal_re = {
     "tr": re.compile(r"([0-9]+)(\.|inci|nci|uncu|üncü|\.)"),
     "hu": re.compile(r"([0-9]+)(\.|adik|edik|odik|edik|ödik|ödike|ik)"),
     "ko": re.compile(r"([0-9]+)(번째|번|차|째)"),
+    "vi": re.compile(r"thứ ([0-9]+)"),
 }
 _number_re = re.compile(r"[0-9]+")
 _currency_re = {
@@ -611,6 +633,7 @@ class VoiceBpeTokenizer:
             "ja": 71,
             "hu": 224,
             "ko": 95,
+            "vi": 250,
         }
 
     @cached_property
@@ -628,7 +651,7 @@ class VoiceBpeTokenizer:
             )
 
     def preprocess_text(self, txt, lang):
-        if lang in {"ar", "cs", "de", "en", "es", "fr", "hu", "it", "nl", "pl", "pt", "ru", "tr", "zh", "ko"}:
+        if lang in {"ar", "cs", "de", "en", "es", "fr", "hu", "it", "nl", "pl", "pt", "ru", "tr", "zh", "ko", "vi"}:
             txt = multilingual_cleaners(txt, lang)
             if lang == "zh":
                 txt = chinese_transliterate(txt)
