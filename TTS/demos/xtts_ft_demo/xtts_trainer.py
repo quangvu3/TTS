@@ -3,7 +3,6 @@ import os
 import sys
 import tempfile
 
-import gradio as gr
 import librosa.display
 import numpy as np
 
@@ -11,7 +10,6 @@ import os
 import torch
 import torchaudio
 import traceback
-from TTS.demos.xtts_ft_demo.utils.formatter import format_audio_list
 from TTS.demos.xtts_ft_demo.utils.gpt_train import train_gpt
 
 from TTS.tts.configs.xtts_config import XttsConfig
