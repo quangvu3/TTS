@@ -98,7 +98,7 @@ def main():
     parser.add_argument("--num_epochs", type=int, help="Number of epochs", default=10)
     parser.add_argument("--batch_size", type=int, help="Batch size", default=2)
     parser.add_argument("--grad_acumm", type=int, help="Gradient accumualation", default=8)
-    parser.add_argument("--max_audio_length", type=int, help="Gradient accumualation", default=12)
+    parser.add_argument("--max_audio_length", type=int, help="Max audio length", default=12)
     
     args = parser.parse_args()
     
